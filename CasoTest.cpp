@@ -2,17 +2,28 @@
 #include <fstream>
 #include <assert.h>
 
-/**
- * Legge un intero viaggio e ritorna il numero di handling
- * di quella soluzione
- */
-int contaHandling(const int aereo[8][8])
+int contaHandling(const int aereo[8][8],int rig,int dest)
 {
-    int handling = 1;
+    int handling=0;
+    if(rig==8)
+    {
+        return 0;
+    }
+    for(int i=0;i<8;i++)
+    {
+        if(aereo[rig][i]==dest)
+        {
+            for(int j=i+1;j<8;j++)
+            {
+                if(aereo[rig][i]!=dest && aereo[rig][i]!=0)
+                {
+                    handling++;
+                }
+            }
+        }
+    }
 
-    //...
-
-    return handling;
+    return handling+contaHandling(aereo,rig+1,dest+1);
 }
 
 
@@ -20,7 +31,7 @@ int main ()
 {
     int aeroporti, handling;
     int aereo[8][8] = {0};
-    std::ifstream file("Input.txt");
+    std::ifstream file("TestMatcandelli.txt");
     file >> aeroporti;
 
     for(int i = 0; i < aeroporti;i++)
@@ -37,7 +48,7 @@ int main ()
         std::cout << "\n";
     }
 
-    assert(contaHandling(aereo) == handling);
+    assert(contaHandling(aereo,0,1) == handling);
 
     return 0;
 }
